@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Markdown from "react-markdown";
 import Alert from "./components/Alert";
 import Card from "./components/Card";
@@ -9,6 +9,7 @@ import { WandSparkles } from "lucide-react";
 
 export default function Main() {
   const [file, setFile] = useState<File | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -16,24 +17,39 @@ export default function Main() {
         throw new Error("No file provided");
       }
 
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("/api", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch clauses");
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
       }
 
-      const data = await response.json();
-      if (!data.clauses || typeof data.clauses !== "string") {
-        throw new Error("Failed to fetch clauses");
-      }
+      const abortController = new AbortController();
+      abortControllerRef.current = abortController;
 
-      return data.clauses;
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const response = await fetch("/api", {
+          method: "POST",
+          body: formData,
+          signal: abortController.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch clauses");
+        }
+
+        const data = await response.json();
+        if (!data.clauses || typeof data.clauses !== "string") {
+          throw new Error("Failed to fetch clauses");
+        }
+
+        return data.clauses;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          return null;
+        }
+        throw error;
+      }
     },
   });
 
@@ -62,6 +78,9 @@ export default function Main() {
               onChange={(e) => {
                 const file = e.target.files?.[0];
                 if (file) {
+                  if (abortControllerRef.current) {
+                    abortControllerRef.current.abort();
+                  }
                   setFile(file);
                 }
               }}
@@ -85,7 +104,7 @@ export default function Main() {
         </div>
       </Card>
 
-      {mutation.isSuccess && (
+      {mutation.isSuccess && mutation.data && (
         <Card verticalScrollable>
           <div className="prose">
             <Markdown>{mutation.data}</Markdown>
