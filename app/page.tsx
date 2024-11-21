@@ -60,7 +60,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex-col p-8 grid grid-cols-[1fr_3fr] gap-12 items-start">
+    <div className="flex-col p-8 grid grid-cols-[1fr_3fr] gap-8 items-start">
       <Card>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">Clause Extraction</h1>

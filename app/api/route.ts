@@ -20,7 +20,12 @@ SaaS agreements usually contain provisions that limit the customer’s rights an
 export const maxDuration = 30;
 
 export async function POST(request: Request) {
-  return Response.json({ clauses: dummyRes });
+  const dummy = true;
+
+  // todo remove this
+  if (dummy) {
+    return Response.json({ clauses: dummyRes });
+  }
 
   try {
     const formData = await request.formData();
