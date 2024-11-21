@@ -16,11 +16,6 @@ const resSchema = z.object({
   date: z.string(),
 });
 
-function PreviousExtractions() {
-  const snapshot = useSnapshot(state);
-  return <div>{snapshot.extractions.map((e) => e.date).join(", ")}</div>;
-}
-
 export default function Main() {
   const [file, setFile] = useState<File | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -81,7 +76,7 @@ export default function Main() {
   }
 
   return (
-    <div className="flex-col p-8 grid grid-cols-[1fr_2fr] gap-8 items-start w-full">
+    <div className="flex-col grid grid-cols-[1fr_2fr] gap-8 items-start w-full">
       <Card>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">
@@ -126,8 +121,6 @@ export default function Main() {
             </button>
           </form>
         </div>
-
-        <PreviousExtractions />
       </Card>
 
       {mutation.isSuccess && mutation.data && (
