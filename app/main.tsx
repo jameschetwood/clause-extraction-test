@@ -82,6 +82,8 @@ export default function Main() {
                     abortControllerRef.current.abort();
                   }
                   setFile(file);
+                } else {
+                  setFile(null);
                 }
               }}
             />
