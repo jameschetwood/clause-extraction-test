@@ -6,6 +6,13 @@ import Alert from "./components/Alert";
 import Card from "./components/Card";
 import { useMutation } from "@tanstack/react-query";
 import { WandSparkles } from "lucide-react";
+import { z } from "zod";
+
+// Potentially overkill for this simple example but useful on more complex applications
+const resSchema = z.object({
+  clauses: z.string(),
+  date: z.string(),
+});
 
 export default function Main() {
   const [file, setFile] = useState<File | null>(null);
@@ -39,11 +46,13 @@ export default function Main() {
         }
 
         const data = await response.json();
-        if (!data.clauses || typeof data.clauses !== "string") {
-          throw new Error("Failed to fetch clauses");
-        }
 
-        return data.clauses;
+        try {
+          const { clauses, date } = resSchema.parse(data);
+          return clauses;
+        } catch (error) {
+          throw new Error("Failed to parse clauses");
+        }
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return null;

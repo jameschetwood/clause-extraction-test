@@ -20,12 +20,8 @@ SaaS agreements usually contain provisions that limit the customer’s rights an
 export const maxDuration = 30;
 
 export async function POST(request: Request) {
-  const dummy = true;
-
   // todo remove this
-  if (dummy) {
-    return Response.json({ clauses: dummyRes });
-  }
+  // return Response.json({ clauses: dummyRes, date: new Date().toISOString() });
 
   try {
     const formData = await request.formData();
@@ -65,7 +61,10 @@ Paragraphs with **bold text** and *italic text*.
 `,
     });
 
-    return Response.json({ clauses: text });
+    return Response.json({
+      clauses: text,
+      date: new Date().toISOString(),
+    });
   } catch (error) {
     console.error("Error parsing PDF:", error);
     return Response.json({ error: "Failed to parse PDF" }, { status: 500 });
