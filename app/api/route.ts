@@ -21,7 +21,10 @@ export const maxDuration = 30;
 
 export async function POST(request: Request) {
   // todo remove this
-  // return Response.json({ clauses: dummyRes, date: new Date().toISOString() });
+  return Response.json({
+    clauses: `${Math.random()} ${dummyRes}`,
+    date: new Date().toISOString(),
+  });
 
   try {
     const formData = await request.formData();

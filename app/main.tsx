@@ -48,8 +48,8 @@ export default function Main() {
         const data = await response.json();
 
         try {
-          const { clauses, date } = resSchema.parse(data);
-          return clauses;
+          const parsed = resSchema.parse(data);
+          return parsed;
         } catch (error) {
           throw new Error("Failed to parse clauses");
         }
@@ -58,6 +58,12 @@ export default function Main() {
           return null;
         }
         throw error;
+      }
+    },
+    onSuccess: (data) => {
+      if (data) {
+        console.log(data);
+        // todo add to global store
       }
     },
   });
@@ -118,7 +124,7 @@ export default function Main() {
       {mutation.isSuccess && mutation.data && (
         <Card verticalScrollable>
           <div className="prose">
-            <Markdown>{mutation.data}</Markdown>
+            <Markdown>{mutation.data.clauses}</Markdown>
           </div>
         </Card>
       )}
