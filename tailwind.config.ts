@@ -8,11 +8,11 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      colors: {},
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  daisyui: {
+    themes: ["light"],
+  },
+  plugins: [require("daisyui"), require("@tailwindcss/typography")],
 } satisfies Config;

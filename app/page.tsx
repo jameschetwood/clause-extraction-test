@@ -79,7 +79,7 @@ export default function Home() {
         <button
           disabled={fetchStatus.status === "loading"}
           type="submit"
-          className="bg-blue-200 p-4 rounded"
+          className="btn btn-primary"
         >
           {fetchStatus.status === "loading"
             ? "Extracting..."
