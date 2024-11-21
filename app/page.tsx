@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Markdown from "react-markdown";
+import Alert from "./components/Alert";
 
 type FetchStatus =
   | {
@@ -22,7 +23,8 @@ type FetchStatus =
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [fetchStatus, setFetchStatus] = useState<FetchStatus>({
-    status: "idle",
+    status: "error",
+    error: "Please choose a file to extract clauses from",
   });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -61,11 +63,9 @@ export default function Home() {
     <div className="flex flex-col p-8">
       <h1>Clause Extraction Tech Test</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 items-start mb-4"
-      >
+      <form onSubmit={handleSubmit} className="flex  gap-4 items-start mb-4">
         <input
+          className="file-input file-input-bordered"
           type="file"
           accept=".pdf,.doc,.docx"
           onChange={(e) => {
@@ -79,11 +79,16 @@ export default function Home() {
         <button
           disabled={fetchStatus.status === "loading"}
           type="submit"
-          className="btn btn-primary"
+          className="btn btn-primary min-w-[9rem] flex items-center justify-center"
         >
-          {fetchStatus.status === "loading"
-            ? "Extracting..."
-            : "Extract Clauses"}
+          {fetchStatus.status === "loading" ? (
+            <>
+              <span>Extracting</span>
+              <span className="loading loading-dots loading-xs"></span>
+            </>
+          ) : (
+            "Extract Clauses"
+          )}
         </button>
       </form>
       <div>
@@ -93,9 +98,7 @@ export default function Home() {
           </div>
         )}
 
-        {fetchStatus.status === "error" && (
-          <p className="bg-red-400">{fetchStatus.error}</p>
-        )}
+        {fetchStatus.status === "error" && <Alert>{fetchStatus.error}</Alert>}
       </div>
     </div>
   );
