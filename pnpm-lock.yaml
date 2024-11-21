@@ -29,6 +29,9 @@ dependencies:
   react-markdown:
     specifier: ^9.0.1
     version: 9.0.1(@types/react@18.3.12)(react@19.0.0-rc-66855b96-20241106)
+  tailwind-merge:
+    specifier: ^2.5.4
+    version: 2.5.4
 
 devDependencies:
   '@tailwindcss/typography':
@@ -3606,6 +3609,10 @@ packages:
       client-only: 0.0.1
       react: 19.0.0-rc-66855b96-20241106
       use-sync-external-store: 1.2.2(react@19.0.0-rc-66855b96-20241106)
+    dev: false
+
+  /tailwind-merge@2.5.4:
+    resolution: {integrity: sha512-0q8cfZHMu9nuYP/b5Shb7Y7Sh1B7Nnl5GqNr1U+n2p6+mybvRtayrQ+0042Z5byvTA8ihjlP8Odo8/VnHbZu4Q==}
     dev: false
 
   /tailwindcss@3.4.15:

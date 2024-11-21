@@ -1,8 +1,15 @@
 import { TriangleAlert } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 
-export default function Alert({ children }: { children: React.ReactNode }) {
+export default function Alert({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="alert alert-error">
+    <div className={twMerge("alert alert-error", className)}>
       <TriangleAlert />
       <span>{children}</span>
     </div>

@@ -36,7 +36,9 @@ export async function POST(request: Request) {
 
 At a minimum the Indemnification, Termination, and Liability clauses must be extracted if in the original text.
 
-If no legal clauses are found, respond with only "No legal clauses found.
+If no legal clauses are found, respond with only "No legal clauses found".
+
+Do not include a generic heading like "Extracted Legal Clauses".
 
 You must always respond in valid markdown eg:
 
