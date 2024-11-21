@@ -7,12 +7,19 @@ import Card from "./components/Card";
 import { useMutation } from "@tanstack/react-query";
 import { WandSparkles } from "lucide-react";
 import { z } from "zod";
+import { actAddExtraction, state } from "./store";
+import { useSnapshot } from "valtio";
 
 // Potentially overkill for this simple example but useful on more complex applications
 const resSchema = z.object({
   clauses: z.string(),
   date: z.string(),
 });
+
+function PreviousExtractions() {
+  const snapshot = useSnapshot(state);
+  return <div>{snapshot.extractions.map((e) => e.date).join(", ")}</div>;
+}
 
 export default function Main() {
   const [file, setFile] = useState<File | null>(null);
@@ -62,8 +69,8 @@ export default function Main() {
     },
     onSuccess: (data) => {
       if (data) {
-        console.log(data);
-        // todo add to global store
+        const { clauses, date } = data;
+        actAddExtraction(clauses, date);
       }
     },
   });
@@ -119,6 +126,8 @@ export default function Main() {
             </button>
           </form>
         </div>
+
+        <PreviousExtractions />
       </Card>
 
       {mutation.isSuccess && mutation.data && (
