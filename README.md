@@ -5,6 +5,7 @@
 - explain use of daisyUI over shadCN
 - cross browser test
 - explain use of valtio
+- mobile optimize
 
 ## AI
 
