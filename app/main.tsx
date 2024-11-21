@@ -4,59 +4,41 @@ import { useState } from "react";
 import Markdown from "react-markdown";
 import Alert from "./components/Alert";
 import Card from "./components/Card";
-
-type FetchStatus =
-  | {
-      status: "idle";
-    }
-  | {
-      status: "loading";
-    }
-  | {
-      status: "success";
-      clauses: string;
-    }
-  | {
-      status: "error";
-      error: string;
-    };
+import { useMutation } from "@tanstack/react-query";
 
 export default function Main() {
   const [file, setFile] = useState<File | null>(null);
-  const [fetchStatus, setFetchStatus] = useState<FetchStatus>({
-    status: "idle",
-  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    try {
-      setFetchStatus({ status: "loading" });
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!file) {
+        throw new Error("No file provided");
+      }
 
       const formData = new FormData();
-      if (!file) {
-        setFetchStatus({
-          status: "error",
-          error: "Please choose a file to extract clauses from",
-        });
-        return;
-      }
       formData.append("file", file);
 
       const response = await fetch("/api", {
         method: "POST",
         body: formData,
       });
+
       if (!response.ok) {
         throw new Error("Failed to fetch clauses");
       }
+
       const data = await response.json();
       if (!data.clauses || typeof data.clauses !== "string") {
         throw new Error("Failed to fetch clauses");
       }
-      setFetchStatus({ status: "success", clauses: data.clauses });
-    } catch (error) {
-      setFetchStatus({ status: "error", error: "Failed to fetch clauses" });
-    }
+
+      return data.clauses;
+    },
+  });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    mutation.mutate();
   }
 
   return (
@@ -79,11 +61,11 @@ export default function Main() {
             />
 
             <button
-              disabled={fetchStatus.status === "loading"}
+              disabled={mutation.isPending}
               type="submit"
               className="btn btn-primary min-w-[9rem] flex items-center justify-center"
             >
-              {fetchStatus.status === "loading" ? (
+              {mutation.isPending ? (
                 <>
                   <span>Extracting</span>
                   <span className="loading loading-dots loading-xs"></span>
@@ -96,17 +78,17 @@ export default function Main() {
         </div>
       </Card>
 
-      {fetchStatus.status === "success" && (
+      {mutation.isSuccess && (
         <Card verticalScrollable>
           <div className="prose">
-            <Markdown>{fetchStatus.clauses}</Markdown>
+            <Markdown>{mutation.data}</Markdown>
           </div>
         </Card>
       )}
 
-      {fetchStatus.status === "error" && (
+      {mutation.isError && (
         <Card verticalScrollable>
-          <Alert>{fetchStatus.error}</Alert>
+          <Alert>{(mutation.error as Error).message}</Alert>
         </Card>
       )}
     </div>
