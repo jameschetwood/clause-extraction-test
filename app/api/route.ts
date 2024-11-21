@@ -24,8 +24,8 @@ export async function POST(request: Request) {
 
     const buffer = await file.arrayBuffer();
     const data = await pdfParse(Buffer.from(buffer));
-    // console.log("PDF Text:", data.text);
 
+    // todo make response be markdown
     const { text } = await generateText({
       model: openai("gpt-4o"),
       prompt: data.text,
@@ -33,8 +33,8 @@ export async function POST(request: Request) {
 
 At a minimum the Indemnification, Termination, and Liability clauses must be extracted if in the original text.
 
-If no legal clauses are found, respond with only "No legal clauses found."
-      `,
+If no legal clauses are found, respond with only "No legal clauses found.
+`,
     });
 
     return Response.json({ clauses: text });

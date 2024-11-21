@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+// import Markdown from "react-markdown";
 
 type FetchStatus =
   | {
@@ -59,6 +60,7 @@ export default function Home() {
   return (
     <div className="flex flex-col p-8">
       <h1>Clause Extraction Tech Test</h1>
+
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 items-start mb-4"
@@ -85,7 +87,10 @@ export default function Home() {
         </button>
       </form>
       <div>
-        {fetchStatus.status === "success" && <pre>{fetchStatus.clauses}</pre>}
+        {fetchStatus.status === "success" && (
+          <div className="whitespace-pre-wrap">{fetchStatus.clauses}</div>
+        )}
+
         {fetchStatus.status === "error" && (
           <p className="bg-red-400">{fetchStatus.error}</p>
         )}
