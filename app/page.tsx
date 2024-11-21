@@ -97,7 +97,7 @@ export default function Home() {
       </Card>
 
       {fetchStatus.status === "success" && (
-        <Card>
+        <Card verticalScrollable>
           <div className="prose">
             <Markdown>{fetchStatus.clauses}</Markdown>
           </div>
@@ -105,7 +105,7 @@ export default function Home() {
       )}
 
       {fetchStatus.status === "error" && (
-        <Card>
+        <Card verticalScrollable>
           <Alert>{fetchStatus.error}</Alert>
         </Card>
       )}

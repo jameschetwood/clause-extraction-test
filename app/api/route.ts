@@ -7,10 +7,21 @@ import pdfParse from "pdf-parse/lib/pdf-parse";
 import { generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
 
+const dummyRes = `## General Indemnity
+SaaS agreements often include a provision – known as a “general indemnity” – that requires a party (usually the customer, but sometimes also the service provider) to protect the other party against certain kinds of claims by third parties and resulting liabilities to third parties. The customer should understand the burdens and benefits of general indemnity provisions and manage risk through prudent business practices and insurance for residual risk.
+
+## Term, Suspension and Termination
+SaaS subscriptions and ancillary services are usually time-limited and subject to suspension or early termination in specified circumstances. The customer should understand the term of each SaaS subscription and ancillary services and take reasonable precautions to properly exercise renewal rights and avoid suspension or unintended early termination.
+
+## Remedy Restrictions/Liability Limitations and Exclusions
+SaaS agreements usually contain provisions that limit the customer’s rights and remedies against the service provider for damage, loss or liabilities caused by the service provider’s breach of the agreement or other misconduct. The customer should understand the risk allocation resulting from those provisions, and manage and mitigate risk through prudent business practices and insurance.`;
+
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(request: Request) {
+  return Response.json({ clauses: dummyRes });
+
   try {
     const formData = await request.formData();
     const file = formData.get("file");
