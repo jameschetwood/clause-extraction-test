@@ -25,7 +25,10 @@ export async function POST(request: Request) {
     const buffer = await file.arrayBuffer();
     const data = await pdfParse(Buffer.from(buffer));
 
-    // todo make response be markdown
+    /*
+    I had to add some formatting examples to make the prompt respond in valid markdown.
+    TODO: Investigate why this is needed. I'm worries this will influence the model eg make it less likely to use lists as lists were not provided as example formatting.
+    */
     const { text } = await generateText({
       model: openai("gpt-4o"),
       prompt: data.text,
@@ -34,6 +37,13 @@ export async function POST(request: Request) {
 At a minimum the Indemnification, Termination, and Liability clauses must be extracted if in the original text.
 
 If no legal clauses are found, respond with only "No legal clauses found.
+
+You must always respond in valid markdown eg:
+
+# Heading level 1
+## Heading level 2
+### Heading level 3		
+Paragraphs with **bold text** and *italic text*.
 `,
     });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-// import Markdown from "react-markdown";
+import Markdown from "react-markdown";
 
 type FetchStatus =
   | {
@@ -88,7 +88,9 @@ export default function Home() {
       </form>
       <div>
         {fetchStatus.status === "success" && (
-          <div className="whitespace-pre-wrap">{fetchStatus.clauses}</div>
+          <div className="prose">
+            <Markdown>{fetchStatus.clauses}</Markdown>
+          </div>
         )}
 
         {fetchStatus.status === "error" && (
