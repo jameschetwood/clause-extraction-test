@@ -3,9 +3,17 @@ import { useState } from "react";
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Form submitted");
+    console.log("Form submitted ", file);
+
+    const response = await fetch("/api", {
+      method: "POST",
+      // body: file,
+    });
+    console.log({ response });
+    const data = await response.json();
+    console.log({ data });
   }
 
   return (
@@ -22,6 +30,7 @@ export default function Home() {
             }
           }}
         />
+
         <button type="submit" className="bg-blue-200 p-4 rounded">
           Extract Clauses
         </button>
