@@ -14,6 +14,7 @@ import { useSnapshot } from "valtio";
 const resSchema = z.object({
   clauses: z.string(),
   date: z.string(),
+  fileName: z.string(),
 });
 
 export default function Main() {
@@ -64,8 +65,7 @@ export default function Main() {
     },
     onSuccess: (data) => {
       if (data) {
-        const { clauses, date } = data;
-        actAddExtraction(clauses, date);
+        actAddExtraction(data);
       }
     },
   });
