@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-slate-200">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased max-h-screen flex`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased max-h-screen flex mx-auto max-w-[1200px]`}
       >
         {children}
       </body>

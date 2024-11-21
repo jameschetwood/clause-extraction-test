@@ -59,7 +59,7 @@ export default function Main() {
   }
 
   return (
-    <div className="flex-col p-8 grid grid-cols-[1fr_3fr] gap-8 items-start">
+    <div className="flex-col p-8 grid grid-cols-[1fr_2fr] gap-8 items-start w-full">
       <Card>
         <div className="flex flex-col gap-4">
           <h1 className="text-2xl font-bold">
