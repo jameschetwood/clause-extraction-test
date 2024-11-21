@@ -6,37 +6,38 @@ TODO Investigate this further than consider using a different library.
 import pdfParse from "pdf-parse/lib/pdf-parse";
 import { generateText } from "ai";
 import { openai } from "@ai-sdk/openai";
-// export async function GET(request: Request) {
-//   //   const formData = await request.formData();
-//   //   console.log(formData);
-//   return new Response("Hello, world!");
-// }
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(request: Request) {
-  const formData = await request.formData();
-  const file = formData.get("file");
-
-  if (!file || !(file instanceof Blob)) {
-    return Response.json(
-      { error: "No file or invalid file provided" },
-      { status: 400 }
-    );
-  }
-
   try {
+    const formData = await request.formData();
+    const file = formData.get("file");
+
+    if (!file || !(file instanceof Blob)) {
+      return Response.json(
+        { error: "No file or invalid file provided" },
+        { status: 400 }
+      );
+    }
+
     const buffer = await file.arrayBuffer();
     const data = await pdfParse(Buffer.from(buffer));
-    console.log("PDF Text:", data.text);
+    // console.log("PDF Text:", data.text);
 
     const { text } = await generateText({
       model: openai("gpt-4o"),
-      prompt: "Write a vegetarian lasagna recipe for 4 people.",
+      prompt: data.text,
+      system: `You are a helpful assistant that extracts salient legal clauses from legal documents.
+
+At a minimum the Indemnification, Termination, and Liability clauses must be extracted if in the original text.
+
+If no legal clauses are found, respond with only "No legal clauses found."
+      `,
     });
 
-    return Response.json({ text });
+    return Response.json({ clauses: text });
   } catch (error) {
     console.error("Error parsing PDF:", error);
     return Response.json({ error: "Failed to parse PDF" }, { status: 500 });
