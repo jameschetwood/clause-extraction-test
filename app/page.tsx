@@ -5,13 +5,17 @@ export default function Home() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("Form submitted ", file);
+
+    const formData = new FormData();
+    if (file) {
+      formData.append("file", file);
+    }
 
     const response = await fetch("/api", {
       method: "POST",
-      // body: file,
+      body: formData,
     });
-    console.log({ response });
+    // console.log({ response });
     const data = await response.json();
     console.log({ data });
   }
