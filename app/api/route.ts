@@ -1,7 +1,8 @@
 // import pdfParse from "pdf-parse";
 /* For reason the default import doens't work. Solution from here: https://stackoverflow.com/questions/76345917/read-pdf-content-in-next-js-13-api-route-handler-results-in-404
 
-TODO Investigate this further than consider using a different library
+TODO Investigate this further than consider using a different library.
+     Remove pdf-parse.d.ts when not needed.
 */
 import pdfParse from "pdf-parse/lib/pdf-parse";
 
