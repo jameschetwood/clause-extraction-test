@@ -7,8 +7,7 @@ import Card from "./components/Card";
 import { useMutation } from "@tanstack/react-query";
 import { WandSparkles } from "lucide-react";
 import { z } from "zod";
-import { actAddExtraction, state } from "./store";
-import { useSnapshot } from "valtio";
+import { actAddExtraction } from "./store";
 
 // Potentially overkill for this simple example but useful on more complex applications
 const resSchema = z.object({
