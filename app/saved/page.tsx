@@ -5,6 +5,12 @@ import { state } from "../store";
 import { format } from "date-fns";
 import Card from "../components/Card";
 
+/* 
+TODOs: 
+- Add pagination
+- Clicking on a row should open the extraction in the homepage
+- When date is recent show time ago instead of date?
+ */
 export default function SavedPage() {
   const snapshot = useSnapshot(state);
   return (
